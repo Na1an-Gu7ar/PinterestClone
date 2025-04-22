@@ -8,6 +8,8 @@ const passport = require('passport')
 const flash = require('connect-flash')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+require('dotenv').config()
+const mongoose = require('mongoose')
 
 
 var app = express();
@@ -35,6 +37,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
